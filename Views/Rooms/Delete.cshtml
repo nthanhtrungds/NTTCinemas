@@ -1,0 +1,78 @@
+﻿@model NTTCinemas.Models.DbModels.Room
+
+@{
+    ViewData["Title"] = "Xóa phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1><b>XÓA PHÒNG</b></h1>
+<h3>@Model.Branch.BranchName</h3>
+<h3>@Model.RoomName</h3>
+<hr />
+@if (ViewBag.DeleteRoomMessage != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.DeleteRoomMessage
+    </div>
+}
+<div class="card">
+    <div class="card-body">
+        <h3>Chắc chắn xóa phòng?</h3>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.RoomName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.RoomName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.WidthOfRoomMap)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.WidthOfRoomMap)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LengthOfRoomMap)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LengthOfRoomMap)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CreationTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CreationTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LastUpdate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LastUpdate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Branch)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Branch.BranchId)
+            </dd>
+        </dl>
+        <div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="RoomId" />
+                <p>Để xác nhận rằng xóa phòng này, vui lòng nhập tên phòng phía dưới:</p>
+                <div class="col-6">
+                    <input name="textConfirm" type="text" class="form-control">
+                    <br /><br />
+                    <input type="submit" value="Xác nhận xóa phòng" class="btn btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<a asp-action="Details" asp-controllerl="Rooms" asp-route-roomId="@Model.RoomId">Trở về</a>

@@ -1,0 +1,148 @@
+﻿@model NTTCinemas.Models.DbModels.Film
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1><b>TẠO PHIM MỚI</b></h1>
+    <hr />
+</div>
+<div>
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-warning" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+</div>
+
+<div class="card">
+    <div class="card-header"></div>
+    <div class="card-body">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="FilmName" class="control-label"></label>
+                        <input asp-for="FilmName" class="form-control" />
+                        <span asp-validation-for="FilmName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="FilmGenre" class="control-label"></label>
+                        <input asp-for="FilmGenre" class="form-control" />
+                        <span asp-validation-for="FilmGenre" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label asp-for="Duration" class="control-label"></label>
+                        <input asp-for="Duration" class="form-control" />
+                        <span asp-validation-for="Duration" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="Language" class="control-label"></label>
+                        <input asp-for="Language" class="form-control" />
+                        <span asp-validation-for="Language" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label asp-for="ReleaseDate" class="control-label"></label>
+                        <input asp-for="ReleaseDate" class="form-control" type="date" />
+                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label asp-for="CustomerAge" class="control-label"></label>
+                        <input asp-for="CustomerAge" class="form-control" />
+                        <span asp-validation-for="CustomerAge" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="Status" class="control-label"></label>
+                        <select asp-for="Status" asp-items="@ViewBag.FilmsStatus" class="form-select"></select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Director" class="control-label"></label>
+                        <input asp-for="Director" class="form-control" />
+                        <span asp-validation-for="Director" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Actors" class="control-label"></label>
+                        <textarea asp-for="Actors" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="Actors" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Trailer" class="control-label"></label>
+                        <textarea asp-for="Trailer" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="Trailer" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Image" class="control-label"></label>
+                        <input name="formFile" class="form-control" type="file" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- Button trigger modal -->
+            <div class="d-md-flex justify-content-lg-end">
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#createBranchModal">
+                    <i class="align-middle me-2" data-feather="save"></i> Lưu
+                </button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="createBranchModal" tabindex="-1" role="dialog"
+                aria-labelledby="createBranchModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createBranchModalLabel">Xác nhận</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Xác nhận lưu phim mới?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Hủy</button>
+                            <input type="submit" class="btn btn-primary" value="Xác nhận" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index" asp-controller="Films">Trở về</a>
+</div>

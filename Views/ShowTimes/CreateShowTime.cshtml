@@ -1,0 +1,171 @@
+﻿@{
+    ViewData["Title"] = "Tạo lịch chiếu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1><b>TẠO LỊCH CHIẾU</b></h1>
+    <hr>
+</div>
+<form id="formCreateShowTime" asp-action="CreateShowTime" method="post">
+    <div class="card">
+        <div class="card-body">
+            <div class="col">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="card-title">Chọn thời gian</h3>
+                        <div class="row">
+                            <div class="mb-3 row">
+                                <label for="dateFrom" class="col-sm-2 col-form-label">Từ ngày</label>
+                                <div class="col-sm-8">
+                                    <input name="dateFrom" type="date" class="form-control" id="dateFrom">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="dateTo" class="col-sm-2 col-form-label">Đến ngày</label>
+                                <div class="col-sm-8">
+                                    <input name="dateTo" type="date" class="form-control" id="dateTo">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h3 class="card-title">Chọn chi nhánh</h3>
+                        <div class="overflow-auto" style="height: 150px;">
+                            @foreach (Branch branch in ViewBag.Branches)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input branch" type="checkbox" value="@branch.BranchId"
+                                    id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        @branch.BranchName
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h3 class="card-title">Chọn phim</h3>
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên phim</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Ngày khởi chiếu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Film film in ViewBag.Films)
+                            {
+                                <tr>
+                                    <th scope="row">
+                                        <div class="form-check">
+                                            <input class="form-check-input film" type="checkbox" value="@film.FilmId"
+                                            id="flexCheckDefault">
+                                        </div>
+                                    </th>
+                                    <td>@Html.DisplayFor(model => film.FilmName)</td>
+                                    @if (film.Status == 1)
+                                    {
+                                        <td>Đang chiếu</td>
+                                    }
+                                    else if (film.Status == 0)
+                                    {
+                                        <td>Sắp chiếu</td>
+                                    }
+                                    <td>@film.ReleaseDate.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <input name="branchIds" id="branchIds" hidden />
+        <input name="filmIds" id="filmIds" hidden />
+        <div class="card-footer">
+            <div class="alert alert-warning" role="alert">
+                - Lưu ý khi tạo lịch: <br>
+                + Thời gian hợp lệ là từ thời điểm hiện tại trở về sau. <br>
+                + Trong khoảng thời gian tạo không được tồn tại bất kì lịch chiếu nào trước đó. <br>
+                + Số ngày tối đa có thể tạo là 14 ngày. <br>
+            </div>
+
+            <!-- Button trigger modal confirm -->
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">Tạo lịch
+                </button>
+            </div>
+            <!-- Modal confirm -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Xác nhận</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Chắc chắn tạo lịch?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                            <button class="btn btn-primary" id="btnConfirm">Đồng ý</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a asp-action="Index">Trở về</a>
+
+</form>
+<script>
+
+
+    $("#btnConfirm").click(function () {
+        var dateFrom = $("#dateFrom").val();
+        var dateTo = $("#dateTo").val();
+        var branches = [];
+        var films = [];
+
+        $('.branch:checkbox:checked').each(function () {
+            branches.push($(this).val())
+        });
+
+        $('.film:checkbox:checked').each(function () {
+            films.push($(this).val())
+        });
+
+        $("#branchIds").val(branches);
+        $("#filmIds").val(films);
+
+
+        $("#formCreateShowTime").submit();
+
+        //data_input = {
+        //    dateFrom: dateFrom,
+        //    dateTo: dateTo,
+        //    branchIds: branches,
+        //    filmIds: films
+        //}
+
+
+        //$.ajax({
+        //    type: "POST",
+        //    url: "@Url.Action("HandlerCreateShowTime", "ShowTimes")",
+        //    data: JSON.stringify(data_input),
+        //    contentType: "application/json; charset=utf-8",  
+        //    dataType: "json", 
+        //    success: function () {
+        //        console.log("success");
+        //    }
+        //});
+
+    });
+</script>

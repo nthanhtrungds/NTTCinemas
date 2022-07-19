@@ -1,0 +1,37 @@
+@model ShowTime
+@{
+    List<Film> films = ViewBag.Films;
+    films = films.Where(f => f.Status == 1 || f.Status == 2 && f.ReleaseDate >= Model.StartTime.Date).ToList();
+
+    SelectList selectFilms = new SelectList(films,"FilmId", "FilmName", Model.FilmId);
+}
+
+<form asp-action="UpdateShowtime" method="post">
+
+    <input type="hidden" asp-for="ShowTimeId"/>
+    <input type="hidden" asp-for="BranchId"/>
+    <input type="hidden" asp-for="RoomId"/>
+
+    <div class="form-group">
+        <label class="control-label">Chi nhánh</label>
+        <input value="@Model.Room.Branch.BranchName" class="form-control" disabled />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Phòng</label>
+        <input value="@Model.Room.RoomName" class="form-control" disabled />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Phim</label>
+        <select asp-for="FilmId" asp-items="selectFilms" class="form-select"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Thời gian bắt đầu</label>
+        <input asp-for="StartTime" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <div class="d-flex justify-content-center">
+            <input type="submit" value="Cập nhật" class="btn btn-primary">
+        </div>
+    </div>
+</form>

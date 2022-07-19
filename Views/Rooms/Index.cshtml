@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Room>
+
+@{
+    ViewData["Title"] = "Phòng chiếu phim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1><b>PHÒNG CHIẾU PHIM</b></h1>
+    <hr />
+</div>
+
+<div class="row">
+    <ul class="nav">
+        <li class="nav-link" aria-current="page">
+            <form asp-action="Index" id="formSelectBranch">
+                <select name="branchId" asp-items="ViewBag.SelectListBranch" class="form-select">
+                    <option>Chi nhánh</option>
+                </select>
+            </form>
+        </li>
+    </ul>
+</div>
+
+@foreach (Branch branch in ViewBag.Branches)
+{
+    <div class="card">
+        <div class="card-header">
+            <h3><b>@branch.BranchName</b></h3>
+            @await Html.PartialAsync("_RoomList", branch)
+        </div>
+    </div>
+
+}
+
+<script>
+    $("#formSelectBranch").change(function () {
+        $(this).submit();
+    });
+</script>

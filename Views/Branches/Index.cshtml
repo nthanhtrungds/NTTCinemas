@@ -1,0 +1,73 @@
+﻿@model IEnumerable<NTTCinemas.Models.DbModels.Branch>
+
+@{
+    ViewData["Title"] = "Chi nhánh rạp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="text-center">
+        <h1><b>CHI NHÁNH NTTCINEMAS</b></h1>
+        <hr>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div>
+                <a asp-action="Create" class="btn btn-sm btn-outline-primary">
+                    <i class="align-middle me-2" data-feather="plus"></i>Thêm chi nhánh mới
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title mb-0">Danh sách chi nhánh</h5>
+            <br>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.BranchName)</th>
+                        <th scope="col">Số lượng phòng</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Email)</th>
+                        <th scope="col">Trạng thái</th>
+                        <th class="col-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int index = 1;
+                    }
+                    @foreach (var branch in Model)
+                    {
+                        <tr>
+                            <th scope="row">@index @{
+                                    index++;
+                                }</th>
+                            <td>@Html.DisplayFor(modelItem => branch.BranchName)</td>
+                            <td>@Html.DisplayFor(modelItem => branch.Rooms.Count)</td>
+                            <td>@Html.DisplayFor(modelItem => branch.PhoneNumber)</td>
+                            <td>@Html.DisplayFor(modelItem => branch.Email)</td>
+                            @if (branch.Status == 1)
+                            {
+                                <td>Hoạt động</td>
+                            }
+                            else if (branch.Status == 0)
+                            {
+                                <td>Đóng cửa</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td>
+                                <a asp-action="Details" asp-route-branchId="@branch.BranchId" class="btn btn-sm btn-info">
+                                    <i class="align-middle me-2" data-feather="info"></i>Chi tiết
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

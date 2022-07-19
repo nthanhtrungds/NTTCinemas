@@ -1,0 +1,90 @@
+﻿@model NTTCinemas.Models.DbModels.Branch
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1><b>XÓA CHI NHÁNH</b></h1>
+<h3>@Model.BranchName</h3>
+<hr />
+@if(ViewBag.DeleteBranchMessage != null)
+{
+    <div class="alert alert-warning" role="alert">
+        @ViewBag.DeleteBranchMessage
+    </div>
+}
+<div class="card">
+    <div class="card-body">
+        <div>
+            <h3>Xác nhận xóa chi nhánh?</h3>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BranchName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.BranchName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Address)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Address)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PhoneNumber)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Manager)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Manager)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OpeningDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.OpeningDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CreationTime)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CreationTime)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.LastUpdate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LastUpdate)
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="BranchId" />
+                <label>Xác nhận xóa bằng cách nhập tên chi nhánh phía bên dưới</label>
+                <div class="col-6">
+                    <input name="textConfirm" type="text" class="form-control" />
+                </div>
+                <br /><br />
+                <input type="submit" value="Xác nhận xóa chi nhánh" class="btn btn-danger" />
+            </form>
+        </div>
+    </div>
+</div>
+<a asp-action="Details" asp-route-branchId="@Model?.BranchId" class="btn btn-outline-primary">Trở về</a>

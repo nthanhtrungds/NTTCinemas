@@ -1,0 +1,97 @@
+﻿@model Room
+
+@{
+    ViewData["Title"] = "Tạo phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1><b>TẠO PHÒNG MỚI</b></h1>
+<h3>Chi nhánh @Model.Branch.BranchName</h3>
+<hr />
+
+<div class="card">
+    <div class="card-body">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form asp-action="Create" asp-controller="Rooms" asp-route-branchId="@Model.Branch.BranchId"
+                    method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="Branch" value="@Model.Branch" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="RoomName" class="control-label"></label>
+                        <input asp-for="RoomName" class="form-control" />
+                        <span asp-validation-for="RoomName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="WidthOfRoomMap" class="control-label"></label>
+                        <input asp-for="WidthOfRoomMap" class="form-control" />
+                        <span asp-validation-for="WidthOfRoomMap" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LengthOfRoomMap" class="control-label"></label>
+                        <input asp-for="LengthOfRoomMap" class="form-control" />
+                        <span asp-validation-for="LengthOfRoomMap" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Status" class="control-label"></label>
+                        <select asp-for="Status" asp-items="@ViewBag.SelectListRoomStatus" class="form-select"></select>
+                        <span asp-validation-for="LengthOfRoomMap" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="modal-footer">
+                        <!-- Button trigger modal confirm -->
+                        <div>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#confirmCreateRoomModal-@Model.BranchId">
+                                <i class="align-middle me-2" data-feather="save"></i> Lưu
+                            </button>
+                        </div>
+                        <!-- Modal confirm -->
+                        <div class="modal fade" id="confirmCreateRoomModal-@Model.BranchId" tabindex="-1" role="dialog"
+                            aria-labelledby="confirmCreateRoomModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Xác nhận lưu</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Xác nhận lưu phòng mới?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Hủy</button>
+                                        <button type="submit" class="btn btn-primary" id="btnConfirmSaveRoom">Xác
+                                            nhận</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a href="@ViewBag.PrePage">
+        <i class="align-middle me-2" data-feather="corner-down-left"></i>
+        Trở về
+    </a>
+</div>
+
+@section Scripts {
+@* @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
+
+
+
+
+}

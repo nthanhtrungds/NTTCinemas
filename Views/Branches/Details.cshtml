@@ -1,0 +1,194 @@
+﻿@model NTTCinemas.Models.DbModels.Branch
+
+@{
+    ViewData["Title"] = "Chi tiết chi nhánh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int roomAmount = 0;
+    int roomOpenAmount = Model.Rooms.Where(r => r.Status == 1).Count();
+    int branchid = 0;
+    if (Model != null)
+    {
+        roomAmount = Model.Rooms.Count;
+        branchid = Model.BranchId;
+    }
+
+}
+
+<div class="container-fluid">
+    <div class="text-center">
+        @if (Model != null)
+        {
+            <h1><b>@Model.BranchName</b></h1>
+            <hr />
+        }
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Thông tin cơ bản</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @if (Model != null)
+                {
+                    <div class="col-md-5">
+
+                        <img src="~/img/branches/@Model.Image" class="img-thumbnail" alt="hình ảnh" />
+                        <div class="">
+                            <a asp-action="EditImage" asp-route-branchId="@Model.BranchId" class="btn btn-sm btn-primary">
+                                <i class="align-middle me-2" data-feather="camera"></i>
+                                Thay ảnh
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="col-md-7">
+                        <dl class="row">
+                            <dt class="col-sm-3">
+                                @Html.DisplayNameFor(model => model.BranchName)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.BranchName)
+                            </dd>
+                            <dt class="col-sm-3">
+                                @Html.DisplayNameFor(model => model.Address)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.Address)
+                            </dd>
+                            <dt class="col-sm-3">
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.PhoneNumber)
+                            </dd>
+                            <dt class="col-sm-3">
+                                @Html.DisplayNameFor(model => model.Email)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+                            <dt class="col-sm-3">
+                                @Html.DisplayNameFor(model => model.OpeningDate)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.OpeningDate)
+                            </dd>
+                            <dt class="col-sm-3">
+                                @Html.DisplayNameFor(model => model.Manager)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.Manager)
+                            </dd>
+                            <dt class="col-sm-3">
+                                @Html.DisplayNameFor(model => model.Status)
+                            </dt>
+                            <dd class="col-sm-9">
+                                <select id="selectBranchStatus" asp-items="@ViewBag.SelectBranchStatus"
+                                class="form-select-sm"></select>
+                                <!-- Modal -->
+                            <div class="modal fade" id="confirm-save-modal" data-backdrop="static" data-keyboard="false"
+                                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirm-save-model-label">Xác nhận lưu</h5>
+                                                <button type="button" class="close-modal" data-dismiss="modal"
+                                                aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>
+                                                    Xác nhận thay đổi trạng thái của chi nhánh?
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary close-modal"
+                                                data-dismiss="modal">Hủy</button>
+                                                <button class="btn btn-primary" id="btnConfirm">Xác nhận</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </dd>
+                            <dt class="col-sm-3">
+                                @Html.DisplayNameFor(model => model.Description)
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.Description)
+                            </dd>
+                        </dl>
+                    </div>
+                }
+                <div>
+                    <div class="d-flex justify-content-end">
+                        <a asp-action="Edit" asp-route-branchId="@Model?.BranchId" class="btn btn-sm btn-primary">
+                            <i class="align-middle me-2" data-feather="edit"></i>Chỉnh sửa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Phòng chiếu</h5>
+        </div>
+        @if (Model != null)
+        {
+            <div class="card-body">
+                <h5><b>Số lượng phòng: @roomAmount (Đang mở: đang mở: @roomOpenAmount)</b></h5>
+                <div class="row">
+
+                    @await Html.PartialAsync("/Views/Rooms/_RoomList.cshtml", @Model)
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@* <a asp-action="Index" asp-controller="Branches">
+    <i class="align-middle me-2" data-feather="bookmark"></i>Trang cụm rạp
+</a><br />
+<a asp-action="Index" asp-controller="Rooms">
+    <i class="align-middle me-2" data-feather="bookmark"></i>Tất cả các phòng
+</a>
+
+<div class="d-flex justify-content-end">
+    <a asp-action="Delete" asp-route-branchId="@Model?.BranchId" class="btn btn-danger">
+        <i class="align-middle me-2" data-feather="delete"></i>Xóa
+    </a>
+</div> *@
+
+<script>
+    $("#selectBranchStatus").change(function () {
+        $("#confirm-save-modal").modal("show");
+
+        $(".close-modal").click(function () {
+            $("#confirm-save-modal").modal("hide");
+        });
+
+    });
+
+    $("#btnConfirm").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateBranchStatus", "Branches")',
+            dataType: 'json',
+            data: {
+                branchId: "@branchid",
+                status: parseInt($("#selectBranchStatus").val())
+            },
+            success: function (data) {
+                window.location.reload()
+            },
+            error: function (data) {
+                window.location.reload()
+            }
+        });
+
+    });
+</script>

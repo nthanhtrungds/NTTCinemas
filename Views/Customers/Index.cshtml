@@ -1,0 +1,85 @@
+﻿@model IEnumerable<NTTCinemas.Models.DbModels.Customer>
+
+@{
+    ViewData["Title"] = "Danh mục khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1><b>KHÁCH HÀNG</b></h1>
+    <hr>
+    <div>
+        <form asp-action="Index">
+            <input name="search" type="text" placeholder="Tìm kiếm theo tên, email hoặc sđt">
+            <input type="submit" value="Tìm">
+        </form>
+    </div>
+</div>
+<br>
+<p>Số lượng khách hàng: @ViewBag.AmountCustomer</p>
+
+<div class="card">
+    <div class="card-body">
+        <p>
+            <a asp-action="Create" class="btn btn-sm btn-outline-primary">Thêm khách hàng mới</a>
+        </p>
+        @if (ViewBag.searchKey == null)
+        {
+            <p>Top 20 khách hàng mới nhất</p>
+        }
+        else
+        {
+            <p>Khách hàng tìm kiếm được theo từ khóa: @ViewBag.searchKey</p>
+        }
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>
+                        Tên khách hàng
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Số điện thoại
+                    </th>
+                    <th>
+                        Địa chỉ
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@i @{
+                                i++;
+                            }</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CustomerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.CustomerId">Chỉnh sửa</a> |
+                            <a asp-action="Details" asp-route-id="@item.CustomerId">Chi tiết</a> |
+                            <a asp-action="Delete" asp-route-id="@item.CustomerId">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

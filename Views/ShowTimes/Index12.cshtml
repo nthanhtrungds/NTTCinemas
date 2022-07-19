@@ -1,0 +1,68 @@
+﻿@model IEnumerable<NTTCinemas.Models.DbModels.ShowTime>
+
+@{
+    ViewData["Title"] = "Lịch chiếu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1><b>LỊCH CHIẾU</b></h1>
+    <hr />
+</div>
+<div>
+    @* <a asp-action="CreateShowtimeAuto" asp-controller="ShowTimes" class="btn btn-outline-primary">Tạo lịch tự động</a> *@
+    <a asp-action="CreateShowTime" asp-controller="ShowTimes" class="btn btn-outline-primary">Tạo lịch chiếu</a>
+</div>
+
+<partial name="_FormSelectDate.cshtml" model="@ViewBag.SortShowTimeInput"></partial>
+
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Room)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Film)
+                    </th>
+                    <th>
+                        Ngày chiều
+                    </th>
+                    <th>
+                        Giờ chiếu
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Room.RoomName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Film.FilmName)
+                        </td>
+                        <td>
+                            @item.StartTime.ToShortDateString()
+                        </td>
+                        <td>
+                            @item.StartTime.ToShortTimeString()
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.ShowTimeId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.ShowTimeId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ShowTimeId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

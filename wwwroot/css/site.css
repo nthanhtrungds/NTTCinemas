@@ -1,0 +1,88 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/*==========================*/
+
+.room-card {
+  border-radius: 5px;
+  border: solid 1px;
+  padding: 5px;
+  margin-top: 20px;
+}
+
+.screenDisplay {
+  background-color: #040a3adf;
+  color: white;
+  width: 400px;
+}
+
+/*========================*/
+
+#seat-setup-table td {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  font-size: 10px;
+  color: #000000;
+}
+
+#seat-setup-table td.seat {
+  background-color: #bcbcbc;
+}
+
+/* ======================== */
+
+.empty_cell, 
+.empty_seat, 
+.selected_seat, 
+.other_select, 
+.selecting_seat{
+  width: 30px;
+  height: 30px;
+}
+
+.cell{
+  display: block;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #dddddd;
+}
+
+.empty_cell{
+  background-color: #ffffff !important;
+}
+.empty_seat{
+  background-color: #bcbcbc !important;
+} 
+.selected_seat{
+  background-color: #ff0000 !important;
+}
+.other_select{
+  background-color: #ffff00 !important;
+}
+.selecting_seat{
+  background-color: #0d599f !important;
+}
+
+
+/* ======================= */

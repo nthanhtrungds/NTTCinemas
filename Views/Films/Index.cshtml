@@ -1,0 +1,124 @@
+﻿@model IEnumerable<NTTCinemas.Models.DbModels.Film>
+
+@{
+    ViewData["Title"] = "Phim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1><b>PHIM</b></h1>
+    <hr />
+</div>
+<div class="card">
+    <div class="card-body">
+        <div>
+            <a asp-action="Create" asp-controller="Films" class="btn btn-sm btn-outline-primary">Thêm phim mới</a>
+        </div>
+        <form asp-action="Index" id="form_sort_filter">
+            <div class="d-flex justify-content-center">
+                <div class="col-5">
+                    <div class="form-inline">
+                        <input name="key_search" class="form-control mr-sm-2" type="search"
+                            placeholder="Tìm kiếm theo tên phim" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                            <i class="align-middle me-2" data-feather="search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <select name="sort" asp-items="ViewBag.SortSelectListItems" id="selectSort">
+                    <option>Sắp xếp</option>
+                </select>
+                <select name="filter" asp-items="ViewBag.FilterSelectListItems" id="selectFilter">
+                    <option>Lọc</option>
+                </select>
+            </div>
+        </form><br>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.FilmName)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.FilmGenre)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Duration)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Language)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.ReleaseDate)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@i @{
+                                i++;
+                            }</th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FilmName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FilmGenre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Duration)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Language)
+                        </td>
+                        <td>
+                            @* @Html.DisplayFor(modelItem => item.ReleaseDate.Value.ToString("dd/MM/yyyy")) *@
+                            @item.ReleaseDate.ToString("dd/MM/yyyy")
+                        </td>
+                        @if (item.Status == 0)
+                        {
+                            <td>Sắp chiếu</td>
+                        }
+                        else if (item.Status == 1)
+                        {
+                            <td>Đang chiếu</td>
+                        }
+                        else if (item.Status == -1)
+                        {
+                            <td>Ngưng chiếu</td>
+                        }
+                        <td>
+                            <a asp-action="Details" asp-route-filmId="@item.FilmId" class="btn btn-sm btn-info">
+                                <i class="align-middle me-2" data-feather="info"></i>Chi tiết
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+
+    $("#selectSort").change(function () {
+        $("#form_sort_filter").submit()
+    })
+
+    $("#selectFilter").change(function () {
+        $("#form_sort_filter").submit()
+    })
+
+</script>

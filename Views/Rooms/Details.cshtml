@@ -1,0 +1,189 @@
+﻿@model NTTCinemas.Models.DbModels.Room
+
+@{
+    ViewData["Title"] = "Chi tiết phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int roomid = Model.RoomId;
+}
+
+<div class="container-fluid">
+
+    <div class="text-center">
+        <h1><b>CHI TIẾT PHÒNG</b></h1>
+        <h3>@Model.RoomName - @Model.Branch.BranchName</h3>
+        <hr />
+    </div>
+    <div class="row">
+        <div class="card col-md-3">
+            <div class="card-body">
+                <dl class="row">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.RoomName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.RoomName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Branch.BranchName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Branch.BranchName)
+                    </dd>
+                    <dt>
+                        Kích thước phòng
+                    </dt>
+                    <dd>
+                        @Model.LengthOfRoomMap x @Model.WidthOfRoomMap (đơn vị: ghế)
+                    </dd>
+                    <dt>
+                        Số lượng ghế
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Seats.Count)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CreationTime)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CreationTime)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.LastUpdate)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.LastUpdate)
+                    </dd>
+                    <dt>
+                        Trạng thái
+                    </dt>
+                    <dd>
+                        <select id="selectRoomStatus" asp-items="@ViewBag.SelectListRoomStatus"
+                            class="form-select-sm"></select>
+                        <!-- Modal -->
+                        <div class="modal fade" id="confirm-save-modal" data-backdrop="static" data-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirm-save-model-label">Xác nhận lưu</h5>
+                                        <button type="button" class="close-modal" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>
+                                            Xác nhận thay đổi trạng thái của phòng?
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary close-modal"
+                                            data-dismiss="modal">Hủy</button>
+                                        <button class="btn btn-primary" id="btnConfirm">Xác nhận</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer">
+                @if (Model != null)
+                {
+                    <div class="col">
+                        <div class="row">
+                            <a asp-action="Edit" asp-route-roomId="@Model?.RoomId" class="btn btn-sm btn-primary">
+                                <i class="align-middle me-2" data-feather="edit"></i>Chỉnh sửa thông tin
+                            </a>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <a asp-action="SetRoomMap" asp-route-roomId="@Model?.RoomId" class="btn btn-sm btn-primary">
+                                <i class="align-middle me-2" data-feather="edit"></i>Cập nhật sơ đồ phòng
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="card col-md-9">
+            <div class="card-body">
+                <div>
+                    @await Html.PartialAsync("../Rooms/_RoomMap.cshtml", @Model)
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class=" row d-flex justify-content-center">
+                    <div class="col-3">
+                        <button class="cell empty_cell"></button>
+                        <span>Chỗ trống</span>
+                    </div>
+                    <div class="col-3">
+                        <button class="cell empty_seat"></button>
+                        <div>Ghế ngồi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@if (Model != null)
+{
+    <div class="col">
+        <div class="row">
+            <a asp-action="Details" asp-controller="Branches" asp-route-branchId="@Model.BranchId">
+                <i class="align-middle me-2" data-feather="bookmark"></i>
+                Chi nhánh @Model.Branch.BranchName
+            </a>
+        </div>
+        <div class="row">
+            <a asp-action="Index" asp-controller="Rooms">
+                <i class="align-middle me-2" data-feather="bookmark"></i>
+                Tất cả phòng
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-end">
+        <a asp-action="Delete" asp-route-roomId="@Model.RoomId" class="btn btn-sm btn-danger">
+            <i class="align-middle me-2" data-feather="delete"></i>Xóa
+        </a>
+    </div>
+}
+
+<script>
+    $("#selectRoomStatus").change(function () {
+        $("#confirm-save-modal").modal("show");
+
+        $(".close-modal").click(function () {
+            $("#confirm-save-modal").modal("hide");
+        });
+
+    });
+
+    $("#btnConfirm").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateRoomStatus", "Rooms")',
+            dataType: 'json',
+            data: { roomId: "@roomid", status: parseInt($("#selectRoomStatus").val()) },
+            success: function (data) {
+                window.location.reload()
+            },
+            error: function (data) {
+                window.location.reload()
+            }
+        });
+
+    });
+
+</script>

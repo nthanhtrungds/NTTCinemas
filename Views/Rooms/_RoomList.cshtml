@@ -1,0 +1,103 @@
+@model Branch
+
+<div class="card-body">
+    <div class="row">
+        <div>
+            <a asp-action="Create" asp-controller="Rooms" asp-route-branchId="@Model.BranchId"
+                class="btn btn-sm btn-outline-primary">
+                <i class="align-middle me-2" data-feather="plus"></i>Thêm phòng
+            </a>
+        </div>
+        <br>
+        <br>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Phòng</th>
+                    <th scope="col">Kích thước</th>
+                    <th scope="col">Số lượng ghế</th>
+                    <th scope="col">Trạng thái</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 0;
+                }
+                @foreach (Room room in Model.Rooms)
+                {
+                    i++;
+                    <tr>
+                        <th scope="row">@i</th>
+                        <td>@room.RoomName</td>
+                        <td>@room.WidthOfRoomMap x @room.LengthOfRoomMap</td>
+                        <td>@room.Seats.Count</td>
+                        @if (room.Status == 1)
+                        {
+                            <td>Đang mở</td>
+                        }
+                        else if (room.Status == 0)
+                        {
+                            <td>Đang đóng</td>
+                        }
+                        <td>
+                            <a asp-action="Details" asp-controller="Rooms" asp-route-roomId="@room.RoomId"
+                            class="btn btn-info btn-sm">
+                                <i class="align-middle me-2" data-feather="info"></i>Chi tiết
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+        @* @foreach (Room room in Model.Rooms)
+            {
+            <div class="col-2">
+            <div class="text-center room-card">
+            <h5 class="card-text"><b>@room.RoomName</b></h5>
+            <p class="card-text">@room.WidthOfRoomMap x @room.LengthOfRoomMap</p>
+            <p class="card-text">Số ghế: @room.Seats.Count</p>
+            <a asp-action="Details" asp-controller="Rooms" asp-route-roomId="@room.RoomId"
+            class="btn btn-info btn-sm">
+            <i class="align-middle me-2" data-feather="info"></i>Chi tiết
+            </a>
+            </div>
+            </div>
+            } *@
+    </div>
+</div>
+<div class="card-footer">
+    <!-- Button trigger modal input -->
+    @* <div>
+        <div>
+        <a asp-action="Create" asp-controller="Rooms" asp-route-branchId="@Model.BranchId"
+        class="btn btn-sm btn-outline-primary">
+        <i class="align-middle me-2" data-feather="plus"></i>Thêm phòng
+        </a>
+        </div>
+        </div> *@
+
+    @* <!-- Modal input -->
+        <div class="modal fade" id="createRoomModal-@Model.BranchId" tabindex="-1" role="dialog"
+        aria-labelledby="createRoomModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title">Tạo phòng mới</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+        <h3><b>@Model.BranchName</b></h3>
+        @await Html.PartialAsync("/Views/Rooms/_FormCreateRoom.cshtml", new Room(){BranchId =
+        Model.BranchId})
+        </div>
+        </div>
+        </div>
+        </div *@
+</div>

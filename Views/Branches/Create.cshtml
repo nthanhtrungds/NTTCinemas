@@ -1,0 +1,122 @@
+﻿@model Branch
+
+@{
+    ViewData["Title"] = "Tạo chi nhánh mới";
+}
+
+<div class="text-center">
+<h1><b>THÊM CHI NHÁNH MỚI</b></h1>
+<hr />
+</div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title mb-0">Cụm rạp mới</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="BranchName" class="control-label"></label>
+                                <input asp-for="BranchName" class="form-control" />
+                                <span asp-validation-for="BranchName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Address" class="control-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" rows="2" class="form-control"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="OpeningDate" class="control-label"></label>
+                                <input asp-for="OpeningDate" type="date" class="form-control" />
+                                <span asp-validation-for="OpeningDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Hình ảnh</label>
+                                <input name="formFile" type="file" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <!-- Button trigger modal -->
+                        <div class="d-md-flex justify-content-lg-end">
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#createBranchModal">
+                                <i class="align-middle me-2" data-feather="save"></i> Lưu
+                            </button>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="createBranchModal" tabindex="-1" role="dialog"
+                            aria-labelledby="createBranchModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="createBranchModalLabel">Xác nhận</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Xác nhận lưu chi nhánh mới?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Hủy</button>
+                                        <input type="submit" class="btn btn-primary" value="Xác nhận" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-link">
+        <i class="align-middle me-2" data-feather="corner-down-left"></i>
+        Trở về
+    </a>
+</div>
+
+
+
+
+@section Scripts{
+<script>
+
+
+
+</script>
+}

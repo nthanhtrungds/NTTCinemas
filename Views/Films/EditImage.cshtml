@@ -1,0 +1,38 @@
+﻿@model NTTCinemas.Models.DbModels.Film
+
+@{
+    ViewData["Title"] = "Chỉnh sửa ảnh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="text-center">
+<h1>CẬP NHẬT HÌNH ẢNH PHIM</h1>
+<h4>@Model.FilmName</h4>
+<hr />
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="EditImage" enctype="multipart/form-data">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">Hình ảnh</label>
+                            <input name="formFile" type="file" class="form-control" />
+                            <input name="filmId" type="hidden" value="@Model.FilmId" />
+                        </div>
+                    </div>
+                    <input type="submit" value="Lưu" class="btn btn-primary" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details" asp-route-filmId="@Model.FilmId">Trở về</a>
+</div>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

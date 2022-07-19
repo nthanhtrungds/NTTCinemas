@@ -1,0 +1,27 @@
+@model List<ShowTime>
+
+@{
+    var rooms = Model.Select(s => s.Room).Distinct().ToList();
+    SortShowTimeInput showTimeInput = ViewBag.SortShowTimeInput;
+}
+
+<div class="row">
+    @foreach (var room in rooms)
+    {
+        List<ShowTime> showtimeDayRoom = Model.Where(s => s.Room == room).ToList();
+
+        <div class="col-md-3">
+            <p class="card-title text-center">@room.RoomName</p>
+            @*<form asp-action="ViewShowtimeByRoom">
+                <input name="branchId" value="@showTimeInput.branchId" hidden>
+                <input name="roomId" value="@room.RoomId" hidden>
+                <input name="dateFrom" value="@showTimeInput.date_from" hidden>
+                <input name="dateTo" value="@showTimeInput.date_to" hidden>
+                <input type="submit" value="click!!">
+            </form>*@
+            @await Html.PartialAsync("_ShowTimeDayRoom", showtimeDayRoom)
+        </div>
+
+
+    }
+</div>

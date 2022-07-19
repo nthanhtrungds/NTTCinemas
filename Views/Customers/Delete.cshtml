@@ -1,0 +1,72 @@
+﻿@model NTTCinemas.Models.DbModels.Customer
+
+@{
+    ViewData["Title"] = "Xóa khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Xóa!!!</h1>
+
+<h3>Chắc chắn xóa?</h3>
+<div>
+    <h4>Khách hàng @Model.CustomerName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Tên khách hàng
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+        <dt class="col-sm-2">
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            Số điện thoại
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt class="col-sm-2">
+            Ngày sinh
+        </dt>
+        <dd class="col-sm-10">
+            @if(Model.Birthday != null){
+                <p>@Model.Birthday.Value.ToString("dd/MM/yyyy")</p>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Địa chỉ
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-2">
+            Giới tính
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class="col-sm-2">
+            Thời gian tạo
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreationTime)
+        </dd>
+        <dt class="col-sm-2">
+            Cập nhật gần nhất
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdate)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CustomerId" />
+        <input type="submit" value="Xác nhận Xóa" class="btn btn-danger" /> |
+        <a asp-action="Index">Trở về</a>
+    </form>
+</div>

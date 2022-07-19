@@ -1,0 +1,125 @@
+﻿@model Branch
+
+@{
+    ViewData["Title"] = "Chỉnh sử thông tin chi nhánh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Chỉnh sửa thông tin</h1>
+<hr />
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title mb-0">@Model.BranchName</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col">
+                <form asp-action="Edit" enctype="multipart/form-data">
+                    <div class="row">
+                        <input type="hidden" asp-for="BranchId" />
+                        <input type="hidden" asp-for="Image" />
+                        <input type="hidden" asp-for="CreationTime" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="BranchName" class="control-label"></label>
+                                <input asp-for="BranchName" class="form-control" />
+                                <span asp-validation-for="BranchName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Address" class="control-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Manager" class="control-label"></label>
+                                <input asp-for="Manager" class="form-control" />
+                                <span asp-validation-for="Manager" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="OpeningDate" class="control-label"></label>
+                                <input asp-for="OpeningDate" type="date" class="form-control" />
+                                <span asp-validation-for="OpeningDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Status" class="control-label"></label>
+                                <select asp-for="Status" asp-items="@ViewBag.SelectBranchStatus"
+                                    class="form-select"></select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button trigger modal -->
+                    <div class="d-md-flex justify-content-lg-end">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#createBranchModal">
+                            <i class="align-middle me-2" data-feather="save"></i> Lưu
+                        </button>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="createBranchModal" tabindex="-1" role="dialog"
+                        aria-labelledby="createBranchModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="createBranchModalLabel">Xác nhận</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Xác nhận lưu thông tin cập nhật?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                    <input type="submit" class="btn btn-primary" value="Xác nhận" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a asp-action="Details" asp-route-branchId="@Model.BranchId">
+    <i class="align-middle me-2" data-feather="chevron-left"></i>Trở về
+</a>
+
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

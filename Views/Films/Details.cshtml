@@ -1,0 +1,233 @@
+﻿@model NTTCinemas.Models.DbModels.Film
+
+@{
+    ViewData["Title"] = "Chi tiết phim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1><b>CHI TIẾT PHIM</b></h1>
+    <h3>@Model.FilmName</h3>
+    <hr />
+</div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Thông tin về phim</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4">
+                <img src="~/img/films/@Model.Image" alt="Hình ảnh phim" class="img-thumbnail" />
+                <div class="d-flex justify-content-center">
+                    <a asp-action="EditImage" asp-controller="Films" asp-route-filmId="@Model.FilmId"
+                        class="btn btn-sm btn-primary">
+                        <i class="align-middle me-2" data-feather="camera"></i> Thay ảnh
+                    </a>
+                </div>
+            </div>
+            <div class="col-8">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.FilmName)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.FilmName)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.FilmGenre)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.FilmGenre)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Duration)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Duration)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Language)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Language)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.ReleaseDate)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @* @Html.DisplayFor(model => model.ReleaseDate.ToString("dd/MM/yyyy")) *@
+                        @Model.ReleaseDate.ToString("dd/MM/yyyy")
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Director)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Director)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Actors)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Actors)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.CustomerAge)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.CustomerAge)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.CreationTime)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @* @Html.DisplayFor(model => model.CreationTime.ToString("dd/MM/yyyy")) *@
+                        @Model.CreationTime.ToString("dd/MM/yyyy")
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.LastUpdate)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @* @Html.DisplayFor(model => model.LastUpdate.ToString("dd/MM/yyyy")) *@
+                        @Model.LastUpdate.ToString("dd/MM/yyyy")
+                    </dd>
+                </dl>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="d-flex justify-content-center">
+                <div class="col-3">
+                    <select id="selectFilmStatus" asp-items="@ViewBag.FilmsStatus" class="form-select"></select>
+
+                    <!-- Modal confirm set status-->
+                    <div class="modal fade" id="setStatus" tabindex="-1" role="dialog" data-backdrop="static"
+                        data-keyboard="false" aria-labelledby="trailerModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Xác nhận thay đổi</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Xác nhận thay đổi trạng thái phim @Model.FilmName
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="btnCloseModel" type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Hủy</button>
+                                    <button id="btnChangeStatus" type="submit" class="btn btn-primary">Xác nhận</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Likes): @Html.DisplayFor(model => model.Likes)
+            </dt>
+        </div>
+        <div class="row">
+            <dt class="col-sm-1">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-11">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-2">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#trailerModal">
+                    <i class="align-middle me-2" data-feather="video"></i> Trailer
+                </button>
+
+                <!-- Modal trailer -->
+                <div class="modal fade" id="trailerModal" tabindex="-1" role="dialog" data-backdrop="static"
+                    data-keyboard="false" aria-labelledby="trailerModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="trailerModalLabel">Trailer phim @Model.FilmName</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="d-flex justify-content-center">
+                                    @Html.Raw(Model.Trailer)
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-end">
+            <a asp-action="Edit" asp-controller="Films" asp-route-filmId="@Model.FilmId" class="btn btn-primary">
+                <i class="align-middle me-2" data-feather="edit"></i>
+                Chỉnh sửa
+            </a>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Trở về</a>
+</div>
+<div class="d-flex justify-content-end">
+    <a asp-action="Delete" asp-controller="Films" asp-route-filmId="@Model.FilmId" class="btn btn-danger">
+        <i class="align-middle me-2" data-feather="delete"></i>
+        Xóa
+    </a>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        var url = $("iframe").attr('src');
+
+        $("#trailerModal").on('hide.bs.modal', function () {
+            $("iframe").attr('src', '');
+        });
+        $("#trailerModal").on('show.bs.modal', function () {
+            $("iframe").attr('src', url);
+        });
+
+    @* =====Change status==== *@
+            $("#selectFilmStatus").change(function () {
+                $("#setStatus").modal('toggle');
+            });
+
+        $("#btnCloseModel").click(function () {
+            $("#setStatus").modal('hide');
+        });
+
+        $("#btnChangeStatus").click(function () {
+
+            var data = {
+                filmId: @Model.FilmId,
+                status: $("#selectFilmStatus").val()
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ChangeFilmStatus", "Films")",
+                data: data,
+                dataType: "text",
+                success: function () {
+                    window.location.reload()
+                },
+                error: function (req, status, error) {
+                    console.log(error)
+                }
+            })
+        });
+
+
+    });
+</script>

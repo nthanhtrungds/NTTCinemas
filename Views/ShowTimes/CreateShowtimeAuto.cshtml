@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Lên lịch chiếu tự động";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1><b>LÊN LỊCH CHIẾU TỰ ĐỘNG</b></h1>
+    <br />
+</div>
+
+@{
+    if (ViewBag.Message != null)
+    {
+        <div class="alert alert-warning" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+}
+
+<div class="card">
+    <form asp-action="CreateShowtimeAuto" asp-controller="ShowTimes" method="post">
+        <div class="card-body">
+            <div class="row d-flex justify-content-center">
+                <div class="col-4">
+                    <label>Thời gian từ</label>
+                    <input name="dateFrom" type="date" class="form-control">
+                </div>
+                <div class="col-4">
+                    <label>Thời gian đến</label>
+                    <input name="dateEnd" type="date" class="form-control">
+                </div>
+                <br />
+            </div>
+        </div>
+        <div class="card-footer">
+            <!-- Button trigger modal confirm -->
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">Lên lịch
+                </button>
+            </div>
+            <!-- Modal confirm -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Xác nhận</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Xác nhận lên lịch chiếu trong khoảng thời gian vừa chọn?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary" id="btnConfirmSaveRoom">Đồng ý</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="card">
+        <div class="card-header">
+            <h4>Một số quy tắc tạo lịch:</h5>
+        </div>
+        <div class="card-body">
+            <p>- Thời gian hợp lệ tính từ thời điểm hiện tại.</p>
+            <p>- Khoảng thời tối đa là 7 ngày.</p>
+            <p>- Khoảng thời gian phải trống, không có bất kì lịch chiếu nào đã tồn tại. </p>
+        </div>
+    </div>
+</div>

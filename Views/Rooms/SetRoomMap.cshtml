@@ -1,0 +1,176 @@
+﻿@model Room
+@{
+    ViewData["Title"] = "Thiết lập sơ đồ phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1><b>THIẾT LẬP SƠ ĐỒ PHÒNG</b></h1>
+    <h3>@Model.RoomName - @Model.Branch.BranchName</h3>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Sơ đồ phòng</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-8">
+                <div class="d-flex justify-content-center">
+                    <button class="screenDisplay">Màn hình</button>
+                </div>
+                <br />
+                <div class="d-flex justify-content-center">
+                    <div class="cell-container">
+                        <table cellpadding="0" cellspacing="0" id="seat-setup-table">
+                            @for (int x = 0; x < Model.WidthOfRoomMap; x++)
+                            {
+                                <tr>
+                                    @for (int y = 0; y < Model.LengthOfRoomMap; y++)
+                                    {
+                                        Seat? seat = Model.Seats.Where(s => s.AxisX == x && s.AxisY == y).FirstOrDefault();
+                                        if (seat != null)
+                                        {
+                                            <td class="seat" data-x="@x" data-y="@y"></td>
+                                        }
+                                        else
+                                        {
+                                            <td data-x="@x" data-y="@y"></td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-self-center col-4">
+                <div>
+                    <div class="row">
+                        <button class="cell empty_cell"></button>
+                        <div class="col">Chỗ trống</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <button class="cell empty_seat"></button>
+                        <div class="col">Ghế ngồi</div>
+                    </div>
+                    <br/>
+                    <div>
+                        <p>Hướng dẫn: Mỗi ô trong sơ đồ là một đơn vị ghế ngồi. Một ô có thể là ghế hoặc để trống tùy theo cách sắp xếp.</p>
+                        <p>Mouse up/down hoặc mouse up/down + di chuyển để đánh dấu phần ghế ngồi và phần chỗ trống.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <!-- Button trigger modal -->
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm-save-model">
+                <i class="align-middle me-2" data-feather="save"></i>Lưu sơ đồ phòng
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirm-save-model" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirm-save-model-label">Xác nhận lưu</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Thực hiện điều này đồng nghĩa với việc sơ đồ phòng cũ sẽ bị thay thế bằng sơ đồ phòng mới.
+                        </p>
+                        <p>
+                            Chắc chắn lưu sơ đồ phòng mới?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button class="btn btn-primary" id="btnSave">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a asp-action="Details" asp-controller="Rooms" asp-route-roomId="@Model.RoomId">
+    <i class="align-middle me-2" data-feather="chevron-left"></i>Trở về
+</a>
+
+
+<script>
+    $(document).ready(function () {
+
+        // Set seats of room
+        $(function () {
+            var isMouseDown = false;
+            var isSeat;
+
+            $("#seat-setup-table td")
+                .mousedown(function () {
+                    isMouseDown = true;
+                    if (!$(this).hasClass("seat")) $(this).addClass("seat");
+                    else if ($(this).hasClass("seat")) $(this).removeClass("seat");
+
+                    isSeat = $(this).hasClass("seat");
+                    return false; // prevent text selection
+                })
+                .mouseover(function () {
+                    if (isMouseDown) {
+                        if (!$(this).hasClass("seat") && isSeat) $(this).addClass("seat");
+                        else if ($(this).hasClass("seat") && !isSeat) $(this).removeClass("seat");
+                    }
+                });
+
+            $(document).mouseup(function () {
+                isMouseDown = false;
+            });
+        });
+
+
+        $(function () {
+            var seats = [];
+            $("#btnSave").click(function () {
+                seats = [];
+
+                $(".seat").each(function () {
+                    var x = $(this).attr("data-x");
+                    var y = $(this).attr("data-y");
+
+                    var seat = {
+                        x: x,
+                        y: y
+                    }
+                    seats.push(seat);
+                })
+
+                var room = {
+                    roomId: @Model.RoomId,
+                    branchId: @Model.BranchId
+            }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SaveRoomMap", "Rooms")",
+                    dataType: "text",
+                    data: {
+                        roomInfo: JSON.stringify(room),
+                        seatsData: JSON.stringify(seats)
+                    },
+                    success: function () {
+                        window.location.reload();
+                    },
+                    error: function (req, status, error) {
+                        console.log(error);
+                    }
+                });
+            })
+        })
+    })
+</script>

@@ -1,0 +1,50 @@
+﻿@model SortShowTimeInput
+@{
+    ViewData["Title"] = "Lịch chiếu phim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<ShowTime> showTimes = ViewBag.ShowTimes;
+}
+
+<div class="text-center">
+    <h1><b>LỊCH CHIẾU PHIM</b></h1>
+    <hr>
+</div>
+<a asp-action="CreateShowTime" asp-controller="ShowTimes" class="btn btn-sm btn-outline-primary">Tạo lịch chiếu tự
+    động</a>
+@* <a asp-action="CreateShowTimeSimple" asp-controller="ShowTimes" class="btn btn-sm btn-outline-primary">Tạo một lịch
+    chiếu</a> *@
+<hr>
+<form asp-action="Index">
+
+    <div class="col">
+        <div class="row">
+            <div>
+                Từ ngày
+                <input asp-for="date_from" type="date">
+                Đến ngày
+                <input asp-for="date_to" type="date">
+                <select asp-for="branchId" asp-items="ViewBag.SelectBranches" class="form-select-sm">
+                    <option>Chọn chi nhánh</option>
+                </select>
+                <input type="submit" value="Xem lịch">
+            </div>
+        </div>
+    </div>
+</form>
+<hr>
+
+@for (DateTime date = Model.date_from.Date; date.Date <= Model.date_to.Date; date = date.AddDays(1))
+{
+    List<ShowTime> showTimesDay = showTimes.Where(s => s.StartTime.Date == date.Date).ToList();
+
+    <div class="card">
+        <div class="card-header">
+            <h3>@date.ToString("dddd, dd/MM/yyyy")</h3>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_ShowTimeDay", showTimesDay)
+        </div>
+    </div>
+
+}
